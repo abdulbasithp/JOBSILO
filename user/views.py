@@ -68,6 +68,7 @@ class LoginView(APIView):
 
             else:    
                 tokens = create_jwt_pair_tokens(user)
+                profile = {}
                 if role == 'seeker':
                     profile = SeekerProfile.objects.get(seeker=user)
                 elif role == 'recruiter':
