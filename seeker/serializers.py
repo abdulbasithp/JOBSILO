@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import SeekerProfile
+from .models import Application, Education, SeekerProfile
 
 
 class SeekerProfileSerializer(serializers.ModelSerializer):
@@ -8,8 +8,18 @@ class SeekerProfileSerializer(serializers.ModelSerializer):
         model = SeekerProfile
         fields = '__all__'
 
-    def __str__(self):
-        return  self.user.email
 
+class EducationSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Education
+        fields = '__all__'
+        
+        
+class ApplicationSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model=Application
+        fields='__all__'
 
 

@@ -1,6 +1,6 @@
 from rest_framework.viewsets import ViewSet
 from .models import Account
-from .serializers import SignUpSerializer
+from .serializers import SignUpSerializer, UserViewSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -36,9 +36,9 @@ class SignUpView(generics.GenericAPIView):
             response = {
                 'message': "User Created Successfully",
             }
-        
             return Response(data=response, status=status.HTTP_201_CREATED)
-        return Response(data=serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LoginView(APIView):
@@ -57,6 +57,7 @@ class LoginView(APIView):
             user_role = Account.objects.get(email=email).role
             print(user_role)
             if role == 'seeker' and role != user_role:
+                
                 response= {
                     "message": "You have seeker Account, You are not allowed here!"
                 }
@@ -67,13 +68,18 @@ class LoginView(APIView):
 
             else:    
                 tokens = create_jwt_pair_tokens(user)
+                if role == 'seeker':
+                    profile = SeekerProfile.objects.get(seeker=user)
+                elif role == 'recruiter':
+                    profile = RecruiterProfile.objects.get(recruiter=user)
                 response = {
-                    "message":"Login successfull",
+                    "message": "Login successfull",
                     "token": tokens,
-                    "user" :{
+                    "user" : {
                         "user_id":user.id,
                         "email":user.email,
-                        "role":user.role
+                        "role":user.role,
+                        'profile_id':profile.id
                     }
 
             }
@@ -88,6 +94,17 @@ class LoginView(APIView):
             "user": str(request.user)
         }
         return Response(content, status=status.HTTP_200_OK)
+
+
+class UserView(generics.RetrieveAPIView):
+    """user details only [email, firstname, middlename, lastname, phone number, city , dob, profile image ]"""
+    permission_classes = []
+    serializer_class = UserViewSerializer
+    queryset = Account.objects.all()
+
+
+
+    
 
 
 

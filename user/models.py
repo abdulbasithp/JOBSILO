@@ -15,7 +15,7 @@ class AccountManager(BaseUserManager):
         email = email.lower()
 
         user = self.model(
-            email=email,
+            email=email,	
             **extra_fields
         )
         user.set_password(password)
@@ -50,7 +50,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     phone_number    = PhoneNumberField(blank=True)
     city            = models.CharField(blank=True, max_length=100)
     profile_image   = models.ImageField(upload_to='images/profileImage', blank=True)
-    role            = models.CharField(max_length=15, blank=True    )
+    role            = models.CharField(max_length=15 )
     is_verified     = models.BooleanField(default=False)
     is_active       = models.BooleanField(default=True)
     is_staff        = models.BooleanField(default=False)

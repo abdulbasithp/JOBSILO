@@ -8,8 +8,8 @@ def create_jwt_pair_tokens(user:User):
     refresh = RefreshToken.for_user(user)
 
     tokens = {
-        "access":str(refresh.access_token),
-        "refresh":str(refresh)
+        "access": str(refresh.access_token),
+        "refresh": str(refresh)
     }
 
     return tokens
