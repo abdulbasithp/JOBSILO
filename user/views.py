@@ -19,10 +19,11 @@ class SignUpView(generics.GenericAPIView):
 
     def post(self, request: Request):
         data = request.data
+        print(data)
         serializer = self.serializer_class(data=data)
         role = request.data.get('role')
         email = request.data.get('email')
-
+        
         if serializer.is_valid():
             serializer.save()
             if role == 'seeker':
@@ -48,42 +49,27 @@ class LoginView(APIView):
         """using email and password post request will return response tokens for authentication:
                 request :   email & password,response :  access & refresh"""
         email = request.data.get('email')
-        password = request.data.get('password')
-        role = request.data.get("role")
+        password = request.data.get('password') 
+        user = authenticate(request, email=email, password=password)
 
-        user = authenticate(email=email, password=password)
-
-        if user is not None:
-            user_role = Account.objects.get(email=email).role
-            print(user_role)
-            if role == 'seeker' and role != user_role:
-                
-                response= {
-                    "message": "You have seeker Account, You are not allowed here!"
+        if user is not None:        
+            tokens = create_jwt_pair_tokens(user) 
+            profile = {}                                                                                                                                                                                                                                                                                                                                          
+            if user.role == 'seeker':
+                profile = SeekerProfile.objects.get(seeker=user)
+            elif user.role == 'recruiter':
+                profile = RecruiterProfile.objects.get(recruiter=user)
+            response = {
+                "message": "Login successfull",
+                "token": tokens,
+                "user" : {
+                    "user_id":user.id,
+                    "email":user.email,
+                    "role":user.role,
+                    'profile_id':profile.id
                 }
-            elif role == 'recruiter' and role!= user_role:
-                response ={
-                    'message': "You have recruiter Account, You are not allowed here!"
-                }
-
-            else:    
-                tokens = create_jwt_pair_tokens(user)
-                profile = {}
-                if role == 'seeker':
-                    profile = SeekerProfile.objects.get(seeker=user)
-                elif role == 'recruiter':
-                    profile = RecruiterProfile.objects.get(recruiter=user)
-                response = {
-                    "message": "Login successfull",
-                    "token": tokens,
-                    "user" : {
-                        "user_id":user.id,
-                        "email":user.email,
-                        "role":user.role,
-                        'profile_id':profile.id
-                    }
-
-            }
+            } 
+            
             return Response(data=response, status=status.HTTP_200_OK)
         else:
             return Response(data={

@@ -17,8 +17,8 @@ class CompanySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class JobPostSerializer(serializers.ModelSerializer):
-
+class JobPostModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobPost
         fields = '__all__'
+        
