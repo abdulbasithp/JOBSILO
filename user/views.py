@@ -23,19 +23,24 @@ class SignUpView(generics.GenericAPIView):
         serializer = self.serializer_class(data=data)
         role = request.data.get('role')
         email = request.data.get('email')
+        password = request.data.get('password')
         
         if serializer.is_valid():
             serializer.save()
+            tokens = {}
             if role == 'seeker':
-                user = Account.objects.get(email=email)
+                user = authenticate(request, email=email, password=password)
+                tokens = create_jwt_pair_tokens(user)
                 SeekerProfile.objects.create(seeker=user)
             elif role == 'recruiter':
-                user = Account.objects.get(email=email)
+                user = authenticate(request, email=email, password=password)
+                tokens = create_jwt_pair_tokens(user)
                 RecruiterProfile.objects.create(recruiter=user)
             else:
                 print('user role supplied is not seeker of recruiter but base user created!')
             response = {
                 'message': "User Created Successfully",
+                'tokens': tokens,
             }
             return Response(data=response, status=status.HTTP_201_CREATED)
         else:

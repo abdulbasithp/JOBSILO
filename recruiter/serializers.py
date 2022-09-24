@@ -1,12 +1,12 @@
 from rest_framework import serializers
-from user.models import Account
-from .models import Company, JobPost
+# from user.models import Account
+from .models import Company, JobPost, RecruiterProfile
 
 
 class RecruiterProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Account
+        model = RecruiterProfile
         fields = '__all__'
 
 

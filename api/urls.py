@@ -3,7 +3,7 @@ from rest_framework import routers
 from superuser.views import CompanyCategoryView
 from education.views import EducationLevelViewSet, EducationCourseViewSet, EducationSpeialisationViewSet
 from seeker.views import SeekerProfileViewSet, EducationViewSet, ApplicationViewSet
-from recruiter.views import CompanyView, JobPostView, RecruiterProfileView, RecruiterJobListView
+from recruiter.views import CompanySearchListView, CompanyView, JobPostView, RecruiterProfileView, RecruiterJobListView
 
 
 
@@ -24,7 +24,7 @@ router.register(r'application', ApplicationViewSet, basename='application')
 urlpatterns = [
     path('user/', include('user.urls')),
     path("recruiter_joblist/<str:pk>", RecruiterJobListView.as_view(), name='recruiter-job-list'),
-    
+    path('company_search/', CompanySearchListView.as_view(), name='company-search'),
 ]
 
 urlpatterns += router.urls

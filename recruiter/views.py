@@ -13,6 +13,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework.request import Request
 from rest_framework.views import APIView
 from django.http import Http404
+from rest_framework import generics
+from rest_framework import filters
 
 
 class CompanyView(ModelViewSet):
@@ -38,11 +40,19 @@ class RecruiterJobListView(APIView):
             recruiter_posts =JobPost.objects.filter(recruiter=pk)
             print(recruiter_posts)
             serializer = JobPostModelSerializer(recruiter_posts, many=True)
-            print(serializer)
             return Response(data = serializer.data,status =status.HTTP_200_OK )
         except:
             print('job posts get error')
             return Response(data = serializer.error, status = status.HTTP_400_BAD_REQUEST)
+        
+
+class CompanySearchListView(generics.ListAPIView):
+    queryset = Company.objects.all()
+    serializer_class = CompanySerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['company_name']
+    
+    
 
         
     

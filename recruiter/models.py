@@ -36,7 +36,7 @@ class JobPost(models.Model):
 
     recruiter = models.ForeignKey(RecruiterProfile, on_delete=models.CASCADE)
     title = models.CharField(max_length=350)
-    qualification = models.ForeignKey(EducationSpecialisation, on_delete=models.PROTECT)
+    qualification = models.ManyToManyField(EducationSpecialisation)
     qualification_disc = models.CharField(max_length=500, blank=True)
     roles = models.TextField(max_length=2000)
     experience = models.IntegerField(null=True,)
