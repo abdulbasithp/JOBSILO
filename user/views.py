@@ -88,7 +88,7 @@ class LoginView(APIView):
         return Response(content, status=status.HTTP_200_OK)
 
 
-class UserView(generics.RetrieveAPIView):
+class UserView(generics.RetrieveUpdateDestroyAPIView):
     """user details only [email, firstname, middlename, lastname, phone number, city , dob, profile image ]"""
     permission_classes = []
     serializer_class = UserViewSerializer

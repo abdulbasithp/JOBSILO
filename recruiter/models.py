@@ -27,6 +27,7 @@ class RecruiterProfile(models.Model):
     def __str__(self):
         return str(self.id)
 
+
 class JobPost(models.Model):
     JOB_TYPE = [
         ('remote', 'Remote'),
