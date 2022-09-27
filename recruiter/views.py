@@ -15,13 +15,16 @@ from rest_framework.views import APIView
 from django.http import Http404
 from rest_framework import generics
 from rest_framework import filters
+from django.http import HttpResponse
 
 
 class CompanyView(ModelViewSet):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
-    
-    
+
+
+
+
 class RecruiterProfileView(ModelViewSet):
     queryset = RecruiterProfile.objects.all()
     serializer_class = RecruiterProfileSerializer

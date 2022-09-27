@@ -40,7 +40,7 @@ class JobPost(models.Model):
     qualification = models.ManyToManyField(EducationSpecialisation)
     qualification_disc = models.CharField(max_length=500, blank=True)
     roles = models.TextField(max_length=2000)
-    experience = models.IntegerField(null=True,)
+    experience = models.IntegerField(null=True)
     experience_desc = models.CharField(max_length=500, blank=True)
     skills = models.ManyToManyField(Skill)
     job_type = models.CharField(choices=JOB_TYPE, max_length=50)
