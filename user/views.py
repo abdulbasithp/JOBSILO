@@ -1,4 +1,4 @@
-from rest_framework.viewsets import ViewSet
+from rest_framework.viewsets import ViewSet, ModelViewSet
 from .models import Account
 from .serializers import SignUpSerializer, UserViewSerializer
 from rest_framework.response import Response
@@ -31,16 +31,21 @@ class SignUpView(generics.GenericAPIView):
             if role == 'seeker':
                 user = authenticate(request, email=email, password=password)
                 tokens = create_jwt_pair_tokens(user)
-                SeekerProfile.objects.create(seeker=user)
+                profile = SeekerProfile.objects.create(seeker=user)
             elif role == 'recruiter':
                 user = authenticate(request, email=email, password=password)
                 tokens = create_jwt_pair_tokens(user)
-                RecruiterProfile.objects.create(recruiter=user)
+                profile = RecruiterProfile.objects.create(recruiter=user)
             else:
                 print('user role supplied is not seeker of recruiter but base user created!')
             response = {
                 'message': "User Created Successfully",
                 'tokens': tokens,
+                'user' :   {
+                    "user_id":user.id,
+                    "email":user.email,
+                    "role":user.role,
+                    'profile_id':profile.id}
             }
             return Response(data=response, status=status.HTTP_201_CREATED)
         else:
@@ -88,7 +93,7 @@ class LoginView(APIView):
         return Response(content, status=status.HTTP_200_OK)
 
 
-class UserView(generics.RetrieveUpdateDestroyAPIView):
+class UserView(ModelViewSet):
     """user details only [email, firstname, middlename, lastname, phone number, city , dob, profile image ]"""
     permission_classes = []
     serializer_class = UserViewSerializer

@@ -40,11 +40,7 @@ class SignUpSerializer(serializers.ModelSerializer):
 class UserViewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
-        fields = ['first_name', 'middle_name', 'last_name', 'role', 'phone_number', 'email', 'dob', 'city', 'profile_image']
-
-
-
-
+        fields = ['first_name', 'last_name', 'middle_name', 'email', 'phone_number', 'profile_image', 'dob', 'is_verified','city','role' ]
 
 
 

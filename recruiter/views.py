@@ -36,26 +36,28 @@ class JobPostView(ModelViewSet):
     
     
 class RecruiterJobListView(APIView):
-    
     def get(self, request, pk):
        
         try:
-            recruiter_posts =JobPost.objects.filter(recruiter=pk)
+            recruiter = RecruiterProfile.objects.get(id=pk)
+            recruiter_posts =JobPost.objects.filter(recruiter=recruiter)
             print(recruiter_posts)
             serializer = JobPostModelSerializer(recruiter_posts, many=True)
+
             return Response(data = serializer.data,status =status.HTTP_200_OK )
+
         except:
             print('job posts get error')
-            return Response(data = serializer.error, status = status.HTTP_400_BAD_REQUEST)
-        
+            return Response('error occurus while getting joblist of recruiter',status=status.HTTP_400_BAD_REQUEST)
+
 
 class CompanySearchListView(generics.ListAPIView):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['company_name']
-    
-    
+
+
 
         
     

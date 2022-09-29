@@ -47,6 +47,7 @@ class JobPost(models.Model):
     location = models.CharField(max_length=150)
     salary_package = models.CharField(max_length=200)
     expiry_date = models.DateField()
+    is_active = models.BooleanField(default=False)
     created_date = models.DateField(auto_now_add=True)
 
     def __str__(self):
