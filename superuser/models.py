@@ -24,3 +24,8 @@ class Skill(models.Model):
         return self.skill_name
 
 
+class Locations(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name

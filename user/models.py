@@ -1,6 +1,7 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from superuser.models import Locations
 
 # Create your models here.
 
@@ -48,7 +49,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     email           = models.EmailField(max_length=200, unique=True, db_index=True, null=False)
     dob             = models.DateField(blank=True, null=True)
     phone_number    = PhoneNumberField(blank=True)
-    city            = models.CharField(blank=True, max_length=100)
+    city            = models.ForeignKey(Locations, null=True, blank=True , on_delete= models.PROTECT)
     profile_image   = models.ImageField(upload_to='images/profileImage', blank=True)
     role            = models.CharField(max_length=15 )
     is_verified     = models.BooleanField(default=False)

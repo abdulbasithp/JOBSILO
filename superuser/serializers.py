@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CompanyCategory, CompanyDepartment, Skill
+from .models import CompanyCategory, CompanyDepartment, Skill, Locations
 
 
 class CompanyCategorySerializer(serializers.ModelSerializer):
@@ -18,3 +18,10 @@ class SkillSerializer(serializers.ModelSerializer):
     class Meta:
         model = Skill
         fields = '__all__'
+
+
+class LocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Locations
+        fields = '__all__'
+

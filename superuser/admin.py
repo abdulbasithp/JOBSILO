@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import CompanyCategory, CompanyDepartment, Skill
+from .models import CompanyCategory, CompanyDepartment, Skill, \
+    Locations
 
 
 @admin.register(CompanyCategory)
@@ -15,3 +16,8 @@ class CompanyDepartmentAdmin(admin.ModelAdmin):
 @admin.register(Skill)
 class SkillAdmin(admin.ModelAdmin):
     list_display = ['skill_name', 'department']
+
+
+@admin.register(Locations)
+class LocationsAdmin(admin.ModelAdmin):
+    list_display = ['name','id']

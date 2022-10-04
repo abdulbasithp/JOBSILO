@@ -40,7 +40,7 @@ class RecruiterJobListView(APIView):
        
         try:
             recruiter = RecruiterProfile.objects.get(id=pk)
-            recruiter_posts =JobPost.objects.filter(recruiter=recruiter)
+            recruiter_posts = JobPost.objects.filter(recruiter=recruiter)
             print(recruiter_posts)
             serializer = JobPostModelSerializer(recruiter_posts, many=True)
 

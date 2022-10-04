@@ -1,6 +1,6 @@
 from django.db import models
 from user.models import Account
-from superuser.models import CompanyCategory
+from superuser.models import CompanyCategory, Locations
 from education.models import EducationSpecialisation
 from superuser.models import Skill
 
@@ -44,8 +44,9 @@ class JobPost(models.Model):
     experience_desc = models.CharField(max_length=500, blank=True)
     skills = models.ManyToManyField(Skill)
     job_type = models.CharField(choices=JOB_TYPE, max_length=50)
-    location = models.CharField(max_length=150)
-    salary_package = models.CharField(max_length=200)
+    location = models.ForeignKey(Locations, on_delete=models.PROTECT)
+    min_salary_package = models.IntegerField(null=True)
+    max_salary_package = models.IntegerField(blank=True,null=True)
     expiry_date = models.DateField()
     is_active = models.BooleanField(default=False)
     created_date = models.DateField(auto_now_add=True)
