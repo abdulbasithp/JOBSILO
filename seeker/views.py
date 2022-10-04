@@ -9,6 +9,8 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.views import APIView
+from django.db.models import Q
 
 
 class SeekerProfileViewSet(ModelViewSet):
@@ -51,9 +53,11 @@ class ExperiencesListView(generics.ListAPIView):
         return Response(serializer.data)
 
 
-class JobPostFilterView(generics.ListAPIView):
-    queryset = JobPost.objects.all()
-    serializer_class = JobPostModelSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['location', 'skills','min_salary_package', 'max_salary_package','qualification']
-    pagination_class = [PageNumberPagination]
+class JobPostFilterView(APIView):
+    def get(self, request):
+        search = request.GET.get('search')
+        job_posts = JobPost.objects.all()
+        if search:
+            job_posts = job_posts.filter(title__icontains=search)
+        serializer = JobPostModelSerializer(job_posts, many=True)
+        return Response(serializer.data)
