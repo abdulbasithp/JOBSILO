@@ -95,7 +95,7 @@ class LoginView(APIView):
 
 class UserView(ModelViewSet):
     """user details only [email, firstname, middlename, lastname, phone number, city , dob, profile image ]"""
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
     serializer_class = UserViewSerializer
     queryset = Account.objects.all()
 

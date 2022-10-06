@@ -56,5 +56,5 @@ class Experience(models.Model):
     currently_working = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.seeker
+        return str(self.seeker)
 

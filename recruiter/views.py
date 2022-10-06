@@ -16,9 +16,10 @@ from django.http import Http404
 from rest_framework import generics
 from rest_framework import filters
 from django.http import HttpResponse
-
+from rest_framework.permissions import IsAuthenticated
 
 class CompanyView(ModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
 
@@ -26,16 +27,19 @@ class CompanyView(ModelViewSet):
 
 
 class RecruiterProfileView(ModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = RecruiterProfile.objects.all()
     serializer_class = RecruiterProfileSerializer
     
     
 class JobPostView(ModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = JobPost.objects.all()
     serializer_class = JobPostModelSerializer
     
     
 class RecruiterJobListView(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request, pk):
        
         try:
@@ -52,6 +56,7 @@ class RecruiterJobListView(APIView):
 
 
 class CompanySearchListView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
     filter_backends = [filters.SearchFilter]

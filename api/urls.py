@@ -1,11 +1,11 @@
 from django.urls import path, include
 from rest_framework import routers
 from superuser.views import CompanyCategoryView , CompanyDepartmentByCategory, SkillByDepartment , \
-        LocationList
+        LocationModelViewsetView, SkillModelViewSetView
 from education.views import EducationLevelViewSet, EducationCourseViewSet, EducationSpecialisationViewSet,\
             EducationCourseFilterByLevel, EducationSpecialisationFilterByCourse
 from seeker.views import SeekerProfileViewSet, EducationViewSet, ApplicationViewSet, SeekerProfileNestedView, \
-        ExperiencesListView, ExperienceViewSet, JobPostFilterView
+        ExperiencesListView, ExperienceViewSet, JobPostFilterView, EducationListViewBySeeker
 from recruiter.views import (CompanySearchListView, CompanyView, JobPostView, RecruiterProfileView,
                             RecruiterJobListView)
 from user.views import UserView,SignUpView, LoginView
@@ -25,7 +25,8 @@ router.register(r'education',EducationViewSet, basename='education')
 router.register(r'application', ApplicationViewSet, basename='application')
 router.register(r'user', UserView, basename='user')
 router.register(r'experience',ExperienceViewSet, basename='experience')
-
+router.register(r'location', LocationModelViewsetView, basename='location')
+router.register(r'skill', SkillModelViewSetView, basename='skills')
 
 urlpatterns = [
 
@@ -43,8 +44,7 @@ urlpatterns = [
     path('company_department/<int:pk>/skills/', SkillByDepartment.as_view(), name='skills-by-department'),
     path('seeker_profile/<int:pk>/', SeekerProfileNestedView.as_view()),
     path('seeker_experience/<int:pk>/', ExperiencesListView.as_view()),
-
-    path('locations/', LocationList.as_view()),
+    path('seeker/<int:pk>/education/',EducationListViewBySeeker.as_view()),
 
     path('jwt/create/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('jwt/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
